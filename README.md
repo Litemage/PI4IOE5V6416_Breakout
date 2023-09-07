@@ -18,3 +18,5 @@ The C driver is designed to be implementation-agnostic. I recommend reading thro
 You create a device handle that is populated with call-backs to all the different functions needed to communicate with the device (read / write). 
 
 This handle is then passed to all the functions in the public API which read/write to the device.
+
+There is currently one driver implementation example under **/Examples**. Open an issue for another example if the simple one isn't enough as a quick-start to the driver.
