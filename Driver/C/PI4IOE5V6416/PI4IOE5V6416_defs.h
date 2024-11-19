@@ -139,7 +139,7 @@ typedef int (*pi4io_reset_pin_fptr_t)(const uint8_t pinState);
  * \param delay Number of uS to delay.
  * 
  */
-typedef void (*pi4io_delay_us_fptr_t)(const uint8_t delay);
+typedef void (*pi4io_delay_us_fptr_t)(const uint64_t delay);
 
 // ========== Enums ==========
 

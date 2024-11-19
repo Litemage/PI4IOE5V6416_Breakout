@@ -959,14 +959,14 @@ PI4IOReadInput(const pi4io_port_num_t port, const pi4io_pin_num_t pin, uint8_t *
 
    // Good to read input
 
-   if ((rslt = PI4IOReadInput(port, pin, pState, pDev)) != PI4IO_OK)
+   if ((rslt = PI4IOGetInputPort(port, &rxBuf, pDev)) != PI4IO_OK)
    {
       return rslt;
    }
 
    // Input valid
 
-   *pState = rxBuf;
+   *pState = rxBuf & mask;
 
    return rslt;
 }
