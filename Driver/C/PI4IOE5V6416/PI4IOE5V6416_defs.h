@@ -9,6 +9,26 @@
 #ifndef __PI4IOE5V6416_DEFS_H__
 #define __PI4IOE5V6416_DEFS_H__
 
+#include <stdint.h>
+#include <stddef.h>
+
+// DEFINITIONS =================================================================
+
+/**
+ * 
+ * Signals to I2C read function to not specify the register address, resulting in
+ * the driver reading from the "current" register, stored on the IC's register pointer
+ * register. 
+ * 
+ * Only valid for reading
+ * 
+ */
+
+#define PI4IO_REG_CURRENT         (0xFF)
+
+#define PI4IO_ADDR_PRM            (0x20)
+#define PI4IO_ADDR_SEC            (0x21)
+
 // ========== Errors ==========
 
 #define PI4IO_ERR_BASE            (0)
@@ -47,30 +67,7 @@
 
 #define PI4IO_REG_MAX             (PI4IO_REG_OUTPUT_PORT_CFG)
 
-/**
- * 
- * Signals to I2C read function to not specify the register address, resulting in
- * the driver reading from the "current" register, stored on the IC's register pointer
- * register. 
- * 
- * Only valid for reading
- * 
- */
-#define PI4IO_REG_CURRENT         (0xFF)
-
-// ========== ADDRESS ==========
-
-#define PI4IO_ADDR_PRM            (0x20)
-#define PI4IO_ADDR_SEC            (0x21)
-
-// ========== Includes ==========
-
-#include <stdint.h>
-#include <stddef.h>
-
-// ========== Type Aliases ==========
-
-//TODO: Make these take in device handle as well
+// TYPE DEFINITIONS ============================================================
 
 /** 
  * Implement I2C communication with this function
@@ -93,7 +90,7 @@
  * Return -1 on failure, and 0 on success
  * 
 */
-typedef int (*pi4io_i2c_write_fptr_t)(const uint8_t reg, const uint8_t val);
+typedef int (*pi4io_i2c_write_fptr_t)(uint8_t addr, const uint8_t reg, const uint8_t val);
 
 /**
  * Implement I2C communication with this function
@@ -119,7 +116,7 @@ typedef int (*pi4io_i2c_write_fptr_t)(const uint8_t reg, const uint8_t val);
  * Return -1 on failure, and 0 on success
  * 
  */
-typedef int (*pi4io_i2c_read_fptr_t)(const uint8_t reg, uint8_t *pBuf, const size_t bufSize);
+typedef int (*pi4io_i2c_read_fptr_t)(uint8_t addr, const uint8_t reg, uint8_t *pBuf, const size_t bufSize);
 
 /**
  * \brief Pointer to a function that controls the reset pin. If null, user is responsible for 
@@ -131,7 +128,7 @@ typedef int (*pi4io_i2c_read_fptr_t)(const uint8_t reg, uint8_t *pBuf, const siz
  * \param pinState Represents the requested state of the reset pin. 0 for low, 1 for high.
  * 
  */
-typedef int (*pi4io_reset_pin_fptr_t)(const uint8_t pinState);
+typedef int (*pi4io_reset_pin_fptr_t)(uint8_t addr, const uint8_t pinState);
 
 /**
  * \brief Delay for x microseconds
@@ -141,7 +138,14 @@ typedef int (*pi4io_reset_pin_fptr_t)(const uint8_t pinState);
  */
 typedef void (*pi4io_delay_us_fptr_t)(const uint64_t delay);
 
-// ========== Enums ==========
+typedef struct
+{
+   pi4io_i2c_write_fptr_t write;  // I2C Write callback
+   pi4io_i2c_read_fptr_t read;    // I2C Read Callback
+   pi4io_reset_pin_fptr_t reset;  // Reset gpio function
+   pi4io_delay_us_fptr_t delayUs; // Delay for some microseconds
+   uint8_t addr;
+} pi4io_dev_t;
 
 typedef enum
 {
@@ -221,14 +225,5 @@ typedef struct
    pi4io_output_cfg_t outputCfg; // push-pull by default
    pi4io_pin_cfg_t pinConfig[8];
 } pi4io_port_cfg_t;
-
-typedef struct
-{
-   pi4io_i2c_write_fptr_t write;  // I2C Write callback
-   pi4io_i2c_read_fptr_t read;    // I2C Read Callback
-   pi4io_reset_pin_fptr_t reset;  // Reset gpio function
-   pi4io_delay_us_fptr_t delayUs; // Delay for some microseconds
-   uint8_t addr;
-} pi4io_dev_t;
 
 #endif // __PI4IOE5V6416_DEFS_H__

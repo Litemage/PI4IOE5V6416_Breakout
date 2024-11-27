@@ -29,7 +29,7 @@ PI4IOGetInputPort(const pi4io_port_num_t portNum, uint8_t *pInputState, const pi
       return rslt;
    }
 
-   rslt = pDev->read(portNum == PI4IO_PORT_0 ? PI4IO_REG_INPUT_PORT_0 : PI4IO_REG_INPUT_PORT_1, &buf, 1);
+   rslt = pDev->read(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_INPUT_PORT_0 : PI4IO_REG_INPUT_PORT_1, &buf, 1);
 
    if (rslt != 0)
    {
@@ -54,7 +54,7 @@ PI4IOSetOutputPort(const pi4io_port_num_t portNum, const uint8_t outputState, co
       return rslt;
    }
 
-   rslt = pDev->write(portNum == PI4IO_PORT_0 ? PI4IO_REG_OUTPUT_PORT_0 : PI4IO_REG_OUTPUT_PORT_1, outputState);
+   rslt = pDev->write(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_OUTPUT_PORT_0 : PI4IO_REG_OUTPUT_PORT_1, outputState);
 
    if (rslt != 0)
    {
@@ -78,7 +78,7 @@ PI4IOGetOutputPort(const pi4io_port_num_t portNum, uint8_t *pOutputState, const 
       return rslt;
    }
 
-   rslt = pDev->read(portNum == PI4IO_PORT_0 ? PI4IO_REG_OUTPUT_PORT_0 : PI4IO_REG_OUTPUT_PORT_1, &buf, 1);
+   rslt = pDev->read(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_OUTPUT_PORT_0 : PI4IO_REG_OUTPUT_PORT_1, &buf, 1);
 
    if (rslt != 0)
    {
@@ -113,7 +113,7 @@ PI4IOSetPortInversePolarity(const pi4io_port_num_t portNum, const uint8_t invert
     */
    // ! end
 
-   rslt = pDev->write(portNum == PI4IO_PORT_0 ? PI4IO_REG_POLARITY_INV_0 : PI4IO_REG_POLARITY_INV_1, invertedState);
+   rslt = pDev->write(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_POLARITY_INV_0 : PI4IO_REG_POLARITY_INV_1, invertedState);
 
    if (rslt != 0)
    {
@@ -137,7 +137,7 @@ PI4IOGetPortInversionPolarity(const pi4io_port_num_t portNum, uint8_t *pInverted
       return rslt;
    }
 
-   rslt = pDev->read(portNum == PI4IO_PORT_0 ? PI4IO_REG_POLARITY_INV_0 : PI4IO_REG_POLARITY_INV_1, &buf, 1);
+   rslt = pDev->read(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_POLARITY_INV_0 : PI4IO_REG_POLARITY_INV_1, &buf, 1);
 
    if (rslt != 0)
    {
@@ -162,7 +162,7 @@ PI4IOSetPinDirection(const pi4io_port_num_t portNum, const uint8_t directionStat
       return rslt;
    }
 
-   rslt = pDev->write(portNum == PI4IO_PORT_0 ? PI4IO_REG_CONFIG_0 : PI4IO_REG_CONFIG_1, directionState);
+   rslt = pDev->write(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_CONFIG_0 : PI4IO_REG_CONFIG_1, directionState);
 
    if (rslt != 0)
    {
@@ -186,7 +186,7 @@ PI4IOGetPinDirection(const pi4io_port_num_t portNum, uint8_t *pDirectionState, c
       return rslt;
    }
 
-   rslt = pDev->read(portNum == PI4IO_PORT_0 ? PI4IO_REG_CONFIG_0 : PI4IO_REG_CONFIG_1, &buf, 1);
+   rslt = pDev->read(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_CONFIG_0 : PI4IO_REG_CONFIG_1, &buf, 1);
 
    if (rslt != 0)
    {
@@ -212,7 +212,7 @@ PI4IOGetOutputDriveStrength(const pi4io_port_num_t portNum, uint8_t (*pDrvStreng
       return rslt;
    }
 
-   rslt = pDev->read(portNum == PI4IO_PORT_0 ? PI4IO_REG_DRV_STREN_0_0 : PI4IO_REG_DRV_STREN_1_0, buf, 2);
+   rslt = pDev->read(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_DRV_STREN_0_0 : PI4IO_REG_DRV_STREN_1_0, buf, 2);
 
    if (rslt != 0)
    {
@@ -239,8 +239,8 @@ PI4IOSetOuputDriveStrength(const pi4io_port_num_t portNum, const uint8_t (*pDrvS
       return rslt;
    }
 
-   rslt = pDev->write(portNum == PI4IO_PORT_0 ? PI4IO_REG_DRV_STREN_0_0 : PI4IO_REG_DRV_STREN_0_0, *(pDrvStrength[0]));
-   rslt = pDev->write(portNum == PI4IO_PORT_0 ? PI4IO_REG_DRV_STREN_0_1 : PI4IO_REG_DRV_STREN_1_1, *(pDrvStrength[1]));
+   rslt = pDev->write(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_DRV_STREN_0_0 : PI4IO_REG_DRV_STREN_0_0, *(pDrvStrength[0]));
+   rslt = pDev->write(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_DRV_STREN_0_1 : PI4IO_REG_DRV_STREN_1_1, *(pDrvStrength[1]));
 
    if (rslt != 0)
    {
@@ -263,7 +263,7 @@ PI4IOSetInputLatch(const pi4io_port_num_t portNum, const uint8_t latchState, con
       return rslt;
    }
 
-   rslt = pDev->write(portNum == PI4IO_PORT_0 ? PI4IO_REG_INPUT_LATCH_0 : PI4IO_REG_INPUT_LATCH_1, latchState);
+   rslt = pDev->write(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_INPUT_LATCH_0 : PI4IO_REG_INPUT_LATCH_1, latchState);
 
    if (rslt != 0)
    {
@@ -287,7 +287,7 @@ PI4IOGetInputLatch(const pi4io_port_num_t portNum, uint8_t *pLatchState, const p
       return rslt;
    }
 
-   rslt = pDev->read(portNum == PI4IO_PORT_0 ? PI4IO_REG_INPUT_LATCH_0 : PI4IO_REG_INPUT_LATCH_1, &buf, 1);
+   rslt = pDev->read(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_INPUT_LATCH_0 : PI4IO_REG_INPUT_LATCH_1, &buf, 1);
 
    if (rslt != 0)
    {
@@ -312,7 +312,7 @@ PI4IOSetPuPdEnable(const pi4io_port_num_t portNum, const uint8_t puPdState, cons
       return rslt;
    }
 
-   rslt = pDev->write(portNum == PI4IO_PORT_0 ? PI4IO_REG_PU_PD_EN_0 : PI4IO_REG_PU_PD_EN_1, puPdState);
+   rslt = pDev->write(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_PU_PD_EN_0 : PI4IO_REG_PU_PD_EN_1, puPdState);
 
    if (rslt != 0)
    {
@@ -336,7 +336,7 @@ PI4IOGetPuPdEnable(const pi4io_port_num_t portNum, uint8_t *pPuPdState, const pi
       return rslt;
    }
 
-   rslt = pDev->read(portNum == PI4IO_PORT_0 ? PI4IO_REG_PU_PD_EN_0 : PI4IO_REG_PU_PD_EN_1, &buf, 1);
+   rslt = pDev->read(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_PU_PD_EN_0 : PI4IO_REG_PU_PD_EN_1, &buf, 1);
 
    if (rslt != 0)
    {
@@ -361,7 +361,7 @@ PI4IOSetPUPD(const pi4io_port_num_t portNum, const uint8_t puPd, const pi4io_dev
       return rslt;
    }
 
-   rslt = pDev->write(portNum == PI4IO_PORT_0 ? PI4IO_REG_PU_PD_CFG_0 : PI4IO_REG_PU_PD_CFG_1, puPd);
+   rslt = pDev->write(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_PU_PD_CFG_0 : PI4IO_REG_PU_PD_CFG_1, puPd);
 
    if (rslt != 0)
    {
@@ -385,7 +385,7 @@ PI4IOGetPUPD(const pi4io_port_num_t portNum, uint8_t *pPuPd, const pi4io_dev_t *
       return rslt;
    }
 
-   rslt = pDev->read(portNum == PI4IO_PORT_0 ? PI4IO_REG_PU_PD_CFG_0 : PI4IO_REG_PU_PD_CFG_1, &buf, 1);
+   rslt = pDev->read(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_PU_PD_CFG_0 : PI4IO_REG_PU_PD_CFG_1, &buf, 1);
 
    if (rslt != 0)
    {
@@ -410,7 +410,7 @@ PI4IOSetIntMask(const pi4io_port_num_t portNum, const uint8_t interruptState, co
       return rslt;
    }
 
-   rslt = pDev->write(portNum == PI4IO_PORT_0 ? PI4IO_REG_INT_MASK_0 : PI4IO_REG_INT_MASK_1, interruptState);
+   rslt = pDev->write(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_INT_MASK_0 : PI4IO_REG_INT_MASK_1, interruptState);
 
    if (rslt != 0)
    {
@@ -434,7 +434,7 @@ PI4IOGetIntMask(const pi4io_port_num_t portNum, uint8_t *pInterruptState, const 
       return rslt;
    }
 
-   rslt = pDev->read(portNum == PI4IO_PORT_0 ? PI4IO_REG_INT_MASK_0 : PI4IO_REG_INT_MASK_1, &buf, 1);
+   rslt = pDev->read(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_INT_MASK_0 : PI4IO_REG_INT_MASK_1, &buf, 1);
 
    if (rslt != 0)
    {
@@ -460,7 +460,7 @@ PI4IOGetIntStatus(const pi4io_port_num_t portNum, uint8_t *pIntStatus, const pi4
       return rslt;
    }
 
-   rslt = pDev->read(portNum == PI4IO_PORT_0 ? PI4IO_REG_INT_STAT_0 : PI4IO_REG_INT_STAT_1, &buf, 1);
+   rslt = pDev->read(pDev->addr, portNum == PI4IO_PORT_0 ? PI4IO_REG_INT_STAT_0 : PI4IO_REG_INT_STAT_1, &buf, 1);
 
    if (rslt != 0)
    {
@@ -486,7 +486,7 @@ PI4IOGetOutputPortConfig(uint8_t *pOutputCfg, const pi4io_dev_t *pDev)
       return rslt;
    }
 
-   rslt = pDev->read(PI4IO_REG_OUTPUT_PORT_CFG, &buf, 1);
+   rslt = pDev->read(pDev->addr, PI4IO_REG_OUTPUT_PORT_CFG, &buf, 1);
 
    if (rslt != 0)
    {
@@ -514,7 +514,7 @@ PI4IOSetOutputPortConfig(pi4io_port_num_t port, uint8_t portOutConfig, const pi4
       return rslt;
    }
 
-   if (pDev->read(PI4IO_REG_OUTPUT_PORT_CFG, &oldRegister, 1) != 0)
+   if (pDev->read(pDev->addr, PI4IO_REG_OUTPUT_PORT_CFG, &oldRegister, 1) != 0)
    {
       return PI4IO_ERR_COMM;
    }
@@ -530,7 +530,7 @@ PI4IOSetOutputPortConfig(pi4io_port_num_t port, uint8_t portOutConfig, const pi4
       newRegister = oldRegister & ~(portMask);
    }
 
-   if (pDev->write(PI4IO_REG_OUTPUT_PORT_CFG, newRegister) != 0)
+   if (pDev->write(pDev->addr, PI4IO_REG_OUTPUT_PORT_CFG, newRegister) != 0)
    {
       return PI4IO_ERR_COMM;
    }
@@ -885,10 +885,10 @@ PI4IOE5V6416Init(const uint8_t addr, pi4io_dev_t *pDev)
 
    if (pDev->reset)
    {
-      pDev->reset(0);
+      pDev->reset(pDev->addr, 0);
       // Take 30 nS to initiate reset, and 600 nS to actually reset, according to datasheet.
-      pDev->delayUs(1);
-      pDev->reset(1);
+      pDev->delayUs(10);
+      pDev->reset(pDev->addr, 1);
    }
 
    return PI4IO_OK;
